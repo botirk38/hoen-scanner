@@ -23,6 +23,28 @@ public class HoenScannerApplication extends Application<HoenScannerConfiguration
     @Override
     public void run(final HoenScannerConfiguration configuration, final Environment environment) {
 
+        ObjectMapper mapper = new ObjectMapper();
+
+        List<SearchResult> carResults = Arrays.asList(
+                mapper.readValue(
+                        getClass().getResource("rental_cars.json"),
+                        SearchResult[].class
+                )
+        );
+
+        List<SearchResult> hotelResults = Array.asList(
+                mapper.readValue(
+                        getClass().getResource("hotels.json"),
+                        SearchResult[].class
+                )
+        );
+
+        List<SearchResult> searchResults = new ArrayList<>();
+        searchResults.addAll(carResults);
+        searchResults.addAll(hotelResults);
+        final SearchResource searchResource = new SearchResource(searchResults);
+        environment.jersey().register(searchResource);
+
     }
 
 }
